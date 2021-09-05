@@ -1,12 +1,76 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MvvmSample2.Views.ComposePage">
+             x:Class="MvvmSample2.Views.ComposePage"
+             BackgroundColor="White"
+             Title="Compose">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="attachedIcon.png"/>
+        <ToolbarItem Command="{Binding AddEmailCommand}" IconImageSource="sendIcon.png"/>
+    </ContentPage.ToolbarItems>
+    
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid ColumnDefinitions="Auto,Auto"
+              RowDefinitions="Auto,Auto,Auto,Auto" Padding="2">
+
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="To"
+                VerticalOptions="Center"
+                FontSize="Small"
+                TextColor="Gray"
+                Padding="10"/>
+
+            <Entry
+                Grid.Row="0"
+                Grid.Column="1"
+                Grid.ColumnSpan="4"
+                TextTransform="Lowercase"
+                TextColor="Black"
+                Keyboard="Email"
+                Text="{Binding To}"/>
+
+            <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                Text="From"
+                FontSize="Small"
+                VerticalOptions="Center"
+                TextColor="Gray"
+                Padding="10"/>
+
+            <Entry
+                Grid.Row="1"
+                Grid.Column="1"
+                Grid.ColumnSpan="4"
+                TextColor="Black"
+                TextTransform="Lowercase"
+                Keyboard="Email"
+                Text="{Binding From}"/>
+
+            <Entry
+                Grid.Row="2"
+                Grid.ColumnSpan="5"
+                Placeholder="Subject"
+                Keyboard="Text"
+                FontSize="Small"
+                TextColor="Black"
+                Text="{Binding Subject}"
+                PlaceholderColor="Gray"/>
+
+            <Editor
+                Grid.Row="3"
+                Grid.ColumnSpan="5"
+                Placeholder="Compose email"
+                Keyboard="Text"
+                FontSize="Small"
+                TextColor="Black"
+                Text="{Binding Description}"
+                HeightRequest="200"
+                PlaceholderColor="Gray"/>
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

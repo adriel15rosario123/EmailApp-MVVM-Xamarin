@@ -4,44 +4,102 @@
              x:Class="MvvmSample2.Views.InboxPage"
              xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              BackgroundColor="White"
-             Title="Inbox"
-             x:Name="inboxPage">
-    
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Order="Primary" Priority="0" Text="Add" Command="{Binding ComposeNewEmailCommand}"/>
-    </ContentPage.ToolbarItems>
+             x:Name="MyInboxPage">
+
+    <NavigationPage.TitleView>
+        <Grid ColumnDefinitions="Auto,6*,Auto" Padding="5">
+            <Image Grid.Column="0" Source="menuIcon.png"/>
+            <Label Grid.Column="1" 
+                   Text="Primary" 
+                   TextColor="White" 
+                   HorizontalOptions="Center"
+                   FontSize="Large"/>
+            <Image Grid.Column="2" Source="searchIcon.png"/>
+        </Grid>
+    </NavigationPage.TitleView>
     
     <ContentPage.Content>
-        <Grid RowDefinitions="*" ColumnDefinitions="*">
-            <ListView x:Name="MyListView" ItemsSource="{Binding Inbox}" SelectedItem="{Binding ShowEmailDetailPageCommand}" HasUnevenRows="True" Margin="15,3,15,1" Grid.Row="0" Grid.Column="0">
-                <ListView.ItemTemplate>
+
+        <StackLayout>
+            <CollectionView Grid.Row="0" ItemsSource="{Binding Inbox}" SelectionMode="Single"
+                            SelectedItem="{Binding SelectedEmail}" ItemsLayout="VerticalList">
+
+                <CollectionView.ItemTemplate>
+
                     <DataTemplate>
-                        <ViewCell >
 
-                            <ViewCell.ContextActions>
-                                <MenuItem Text="Delete" Command="{Binding Source={x:Reference inboxPage}, Path=BindingContext.DeleteEmailCommnad}" CommandParameter="{Binding}"/>
-                            </ViewCell.ContextActions>
+                        <SwipeView>
 
-                            <StackLayout Orientation="Horizontal" Margin="2">
+                            <SwipeView.RightItems>
+                                <SwipeItem IconImageSource="deleteIcon.png" Command="{Binding Source={x:Reference MyInboxPage} , Path=BindingContext.DeleteEmailCommnad}" 
+                                           CommandParameter="{Binding}"
+                                           BackgroundColor="Red"
+                                           IsDestructive="True"/>
+                            </SwipeView.RightItems>
 
-                                <controls:CircleImage Source="{Binding ProfileImage}" WidthRequest="80" HeightRequest="80"/>
+                            <Frame BorderColor="LightGray" Padding="0">
 
-                                <StackLayout Orientation="Vertical" Margin="2">
-                                    <Label Text="{Binding Sender}" FontSize="20" TextColor="Black" Margin="1"/>
-                                    <Label Text="{Binding Receiver}" FontSize="17" TextColor="Gray" Margin="2"/>
-                                    <Label Text="{Binding Description}" MaxLines="1" LineBreakMode="TailTruncation" FontSize="13" TextColor="LightGray" Margin="2"/>
-                                </StackLayout>
+                                <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*,Auto" Padding="5" RowSpacing="0">
+                                    
+                                    <controls:CircleImage Source="{Binding ProfileImage}" Grid.RowSpan="2" Grid.Column="0"/>
 
-                                <StackLayout Orientation="Vertical">
-                                    <Label Text="{Binding Created}" FontSize="17" TextColor="Gray" Margin="2"/>
-                                </StackLayout>
+                                    <Label Grid.Column="1" Grid.Row="0"
+                                           Text="{Binding Sender}"
+                                           FontSize="Small"
+                                           TextColor="Black"/>
 
-                            </StackLayout>
-                        </ViewCell>
+                                    <Label Grid.Column="1" Grid.Row="1"
+                                           Text="{Binding Subject}"
+                                           FontSize="Small"
+                                           TextColor="DimGray"/>
+
+                                    <Label Grid.Column="1" Grid.Row="2"
+                                           Text="{Binding Description}"
+                                           MaxLines="1"
+                                           LineBreakMode="TailTruncation"
+                                           TextColor="Gray"/>
+
+
+                                    <Label Grid.Column="2" Grid.Row="0"
+                                           Text="{Binding Created}"
+                                           FontSize="Micro"
+                                           HorizontalOptions="End"
+                                           TextColor="Gray"/>
+
+                                </Grid>
+                                
+                            </Frame>
+
+                        </SwipeView>
+                        
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
-        
+                    
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <Grid>
+                        <Label
+                        Text="Inbox Empty"
+                        FontSize="Medium"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        />
+                    </Grid>
+                </CollectionView.EmptyView>
+
+            </CollectionView>
+
+            <Button WidthRequest="65"
+                    HeightRequest="65"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"
+                    Margin="20"
+                    CornerRadius="30"
+                    BackgroundColor="Red"
+                    Command="{Binding ComposeNewEmailCommand}"
+                    ImageSource="composeIcon.png"/>
+
+        </StackLayout>
+    
     </ContentPage.Content>
 </ContentPage>
